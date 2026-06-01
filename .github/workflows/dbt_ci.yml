@@ -45,6 +45,10 @@ jobs:
           echo "      schema: dbt_ci" >> ~/.dbt/profiles.yml
           echo "      threads: 4" >> ~/.dbt/profiles.yml
 
+      - name: Debug — check profiles.yml
+        run: |
+          echo "Checking profiles.yml exists..."
+          cat ~/.dbt/profiles.yml | sed 's/password:.*/password: [HIDDEN]/'
       - name: dbt deps
         run: dbt deps
 
