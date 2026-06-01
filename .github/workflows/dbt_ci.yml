@@ -31,21 +31,19 @@ jobs:
       - name: Create profiles.yml
         run: |
           mkdir -p ~/.dbt
-          cat << EOF > ~/.dbt/profiles.yml
-          analytics_platform:
-            target: ci
-            outputs:
-              ci:
-                type: snowflake
-                account: ${{ secrets.SNOWFLAKE_ACCOUNT }}
-                user: ${{ secrets.SNOWFLAKE_USER }}
-                password: ${{ secrets.SNOWFLAKE_PASSWORD }}
-                role: DBT_CI
-                warehouse: DBT_WH
-                database: STAGING
-                schema: dbt_ci_${{ github.event.pull_request.number }}
-                threads: 4
-          EOF
+          echo "analytics_platform:" > ~/.dbt/profiles.yml
+          echo "  target: ci" >> ~/.dbt/profiles.yml
+          echo "  outputs:" >> ~/.dbt/profiles.yml
+          echo "    ci:" >> ~/.dbt/profiles.yml
+          echo "      type: snowflake" >> ~/.dbt/profiles.yml
+          echo "      account: $SNOWFLAKE_ACCOUNT" >> ~/.dbt/profiles.yml
+          echo "      user: $SNOWFLAKE_USER" >> ~/.dbt/profiles.yml
+          echo "      password: $SNOWFLAKE_PASSWORD" >> ~/.dbt/profiles.yml
+          echo "      role: DBT_CI" >> ~/.dbt/profiles.yml
+          echo "      warehouse: DBT_WH" >> ~/.dbt/profiles.yml
+          echo "      database: STAGING" >> ~/.dbt/profiles.yml
+          echo "      schema: dbt_ci" >> ~/.dbt/profiles.yml
+          echo "      threads: 4" >> ~/.dbt/profiles.yml
 
       - name: dbt deps
         run: dbt deps
@@ -53,17 +51,11 @@ jobs:
       - name: dbt compile
         run: dbt compile
 
-      - name: dbt run (slim CI — modified models only)
-        run: |
-          dbt run --select state:modified+ \
-            --defer \
-            --state ./target
+      - name: dbt run
+        run: dbt run
 
       - name: dbt test
-        run: |
-          dbt test --select state:modified+ \
-            --defer \
-            --state ./target
+        run: dbt test
 
       - name: dbt docs generate
         run: dbt docs generate
