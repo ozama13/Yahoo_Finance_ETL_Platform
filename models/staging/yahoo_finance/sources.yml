@@ -1,0 +1,47 @@
+version: 2
+
+sources:
+  - name: yahoo_finance
+    database: RAW
+    schema: YAHOO_FINANCE
+    description: "Raw stock price data loaded via yfinance Python script"
+
+    freshness:
+      warn_after:  {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
+
+    loaded_at_field: LOADED_AT
+
+    tables:
+      - name: stock_prices
+        description: "Daily OHLCV stock prices for tracked tickers"
+        columns:
+          - name: DATE
+            description: "Trading date"
+            tests:
+              - not_null
+          - name: ticker
+            description: "Stock ticker symbol"
+            tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'META']
+          - name: OPEN
+            tests:
+              - not_null
+          - name: HIGH
+            tests:
+              - not_null
+          - name: LOW
+            tests:
+              - not_null
+          - name: CLOSE
+            tests:
+              - not_null
+          - name: VOLUME
+            tests:
+              - not_null
+          - name: LOADED_AT
+            tests:
+              - not_null

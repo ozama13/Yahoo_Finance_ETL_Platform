@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: int_stock_metrics
+    description: "Stock prices enriched with financial metrics and moving averages"
+    columns:
+      - name: price_date
+        tests:
+          - not_null
+      - name: ticker
+        tests:
+          - not_null
+      - name: daily_return_pct
+        description: "Percentage return vs previous trading day"
+      - name: ma_7
+        description: "7-day moving average close price"
+      - name: ma_30
+        description: "30-day moving average close price"
+      - name: ma_90
+        description: "90-day moving average close price"
+      - name: cumulative_return_pct
+        description: "Cumulative return since 2020-01-02"

@@ -1,0 +1,18 @@
+# dbt
+target/
+dbt_packages/
+logs/
+
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+dbt-env/
+
+# Credentials — never commit these
+profiles.yml
+*.p8
+*.pem
+ingestion/load_yahoo_finance.py
+ingestion/load_yahoo_finance.py.local
