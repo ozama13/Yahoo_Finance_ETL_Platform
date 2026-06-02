@@ -18,6 +18,8 @@ The pipeline runs automatically every weekday at 6am, pulling fresh stock price 
 
 ## Architecture
 
+![Architecture Diagram](images/yfin_architecture.png)
+
 ---
 
 ## Tech Stack
@@ -104,11 +106,14 @@ Every push to `main` triggers a GitHub Actions workflow that:
 
 The `yahoo_finance_elt` DAG runs Monday–Friday at 6am UTC:
 
+![DBT Flow](images/yfin_dbt.png)
+
 - Task 1 pulls the latest prices from Yahoo Finance into `RAW.YAHOO_FINANCE.STOCK_PRICES`
 - Task 2 rebuilds all dbt models in dependency order
 - Task 3 runs all data quality tests — fails the DAG if any test fails
 - Task 4 regenerates dbt documentation
 
+![Airflow Dag](images/yFin_Dag.png)
 ---
 
 ## Project Structure
