@@ -1,3 +1,4 @@
+cat > .github/workflows/dbt_ci.yml << 'EOF'
 name: dbt CI
 
 on:
@@ -11,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      SNOWFLAKE_ACCOUNT:  ${{ secrets.SNOWFLAKE_ACCOUNT }}
-      SNOWFLAKE_USER:     ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
       SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
 
     steps:
@@ -25,8 +26,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: |
-          pip install dbt-snowflake
+        run: pip install dbt-snowflake
 
       - name: Create profiles.yml
         run: |
@@ -36,19 +36,18 @@ jobs:
           echo "  outputs:" >> ~/.dbt/profiles.yml
           echo "    ci:" >> ~/.dbt/profiles.yml
           echo "      type: snowflake" >> ~/.dbt/profiles.yml
-          echo "      account: $SNOWFLAKE_ACCOUNT" >> ~/.dbt/profiles.yml
-          echo "      user: $SNOWFLAKE_USER" >> ~/.dbt/profiles.yml
-          echo "      password: $SNOWFLAKE_PASSWORD" >> ~/.dbt/profiles.yml
+          echo "      account: ${SNOWFLAKE_ACCOUNT}" >> ~/.dbt/profiles.yml
+          echo "      user: ${SNOWFLAKE_USER}" >> ~/.dbt/profiles.yml
+          echo "      password: ${SNOWFLAKE_PASSWORD}" >> ~/.dbt/profiles.yml
           echo "      role: DBT_CI" >> ~/.dbt/profiles.yml
           echo "      warehouse: DBT_WH" >> ~/.dbt/profiles.yml
           echo "      database: STAGING" >> ~/.dbt/profiles.yml
           echo "      schema: dbt_ci" >> ~/.dbt/profiles.yml
           echo "      threads: 4" >> ~/.dbt/profiles.yml
 
-      - name: Debug — check profiles.yml
-        run: |
-          echo "Checking profiles.yml exists..."
-          cat ~/.dbt/profiles.yml | sed 's/password:.*/password: [HIDDEN]/'
+      - name: Debug profiles.yml
+        run: cat ~/.dbt/profiles.yml | sed 's/password:.*/password: [HIDDEN]/'
+
       - name: dbt deps
         run: dbt deps
 
@@ -69,3 +68,4 @@ jobs:
         with:
           name: dbt-docs
           path: target/
+EOF
