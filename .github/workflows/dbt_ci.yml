@@ -45,7 +45,7 @@ jobs:
           echo "      threads: 4" >> ~/.dbt/profiles.yml
 
       - name: Debug profiles.yml
-        run: cat ~/.dbt/profiles.yml | sed "s/password:.*/password: [HIDDEN]/"
+        run: cat ~/.dbt/profiles.yml | sed 's/password:.*/password: HIDDEN/'
 
       - name: dbt deps
         run: dbt deps
