@@ -16,3 +16,4 @@ profiles.yml
 *.pem
 ingestion/load_yahoo_finance.py
 ingestion/load_yahoo_finance.py.local
+.streamlit/secrets.toml
