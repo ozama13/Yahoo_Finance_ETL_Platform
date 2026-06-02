@@ -112,14 +112,15 @@ The `yahoo_finance_elt` DAG runs Monday–Friday at 6am UTC:
 ---
 
 ## Project Structure
+```text
 analytics_platform/
 ├── ingestion/
-│   └── load_yahoo_finance.py    # Extract & load raw data into Snowflake
+│   └── load_yahoo_finance.py
 ├── models/
 │   ├── staging/
 │   │   └── yahoo_finance/
-│   │       ├── sources.yml      # Source definitions & freshness checks
-│   │       ├── schema.yml       # Staging model tests
+│   │       ├── sources.yml
+│   │       ├── schema.yml
 │   │       └── stg_stock_prices.sql
 │   ├── intermediate/
 │   │   ├── schema.yml
@@ -129,13 +130,13 @@ analytics_platform/
 │           ├── schema.yml
 │           ├── fct_stock_prices.sql
 │           └── dim_tickers.sql
-├── .github/
-│   └── workflows/
-│       └── dbt_ci.yml           # GitHub Actions CI/CD
-├── streamlit_app.py             # Live dashboard
-├── packages.yml                 # dbt packages
-├── requirements.txt             # Python dependencies
-└── dbt_project.yml              # dbt project config
+├── .github/workflows/
+│   └── dbt_ci.yml
+├── streamlit_app.py
+├── packages.yml
+├── requirements.txt
+└── dbt_project.yml
+```
 ---
 
 ## Setup
